@@ -74,5 +74,5 @@ type UserCenter interface {
 	Login(ctx context.Context, request *LoginRequest) (resp *LoginResponse, err error)
 	Logout(ctx context.Context, token string) (err error)
 
-	CheckToken(ctx context.Context, token string) (uid uint64, err error)
+	CheckToken(ctx context.Context, token string, renewToken bool) (newToken string, uid uint64, err error)
 }

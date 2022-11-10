@@ -58,6 +58,18 @@ type LoginResponse struct {
 	ContinueID        uint64
 }
 
+type AuthingData struct {
+	AuthForUserPolicy
+	UniqueID uint64
+	StartAt  time.Time
+}
+
+type AuthingDataStorage interface {
+	Store(ctx context.Context, d *AuthingData, expiration time.Duration) error
+	Load(ctx context.Context, uniqueID uint64) (*AuthingData, error)
+	Delete(ctx context.Context, uniqueID uint64) error
+}
+
 type UserCenter interface {
 	Login(ctx context.Context, request *LoginRequest) (resp *LoginResponse, err error)
 	Logout(ctx context.Context, token string) (err error)

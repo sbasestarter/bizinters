@@ -11,16 +11,21 @@ import (
 
 type Authenticator interface {
 	GetMethodName() (method string)
-	Verify(ctx context.Context) (uid uint64, ok bool, err error)
+	Verify(ctx context.Context) (uid uint64, tokenData string, ok bool, err error)
 }
 
 //
 //
 //
 
+type VerifiedMethodWithTokenData struct {
+	MethodName string
+	TokenData  string
+}
+
 type AuthForUserPolicy struct {
 	UserID           uint64
-	VerifiedMethods  []string
+	VerifiedMethods  []*VerifiedMethodWithTokenData
 	SupportedMethods []string
 }
 
@@ -74,5 +79,6 @@ type UserCenter interface {
 	Login(ctx context.Context, request *LoginRequest) (resp *LoginResponse, err error)
 	Logout(ctx context.Context, token string) (err error)
 
-	CheckToken(ctx context.Context, token string, renewToken bool) (newToken string, uid uint64, err error)
+	CheckToken(ctx context.Context, token string, renewToken bool) (newToken string, uid uint64,
+		tokenDataList map[string]string, err error)
 }

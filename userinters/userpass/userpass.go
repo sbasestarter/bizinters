@@ -11,6 +11,7 @@ type User struct {
 	UserName string
 	Password string
 	CreateAt int64
+	ExData   map[string]interface{}
 }
 
 type UserPasswordModel interface {
@@ -21,4 +22,7 @@ type UserPasswordModel interface {
 	GetUserByUserName(ctx context.Context, userName string) (user *User, err error)
 
 	ListUsers(ctx context.Context) (users []*User, err error)
+
+	UpdateUserExData(ctx context.Context, userID uint64, key string, val interface{}) (err error)
+	UpdateUserAllExData(ctx context.Context, userID uint64, exData map[string]interface{}) (err error)
 }
